@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User home</title>
+</head>
+
+<body>
+<div>
+    <h1>Welcome to your user home page</h1>
+</div>
+<br>
+<div>
+    <p><label>Full name:</label>
+        <input type="text" th:value="${user.fullName}" />
+        <br>
+        <label>E-mail:</label>
+        <input type="text" th:value="${user.username}" />
+        <br>
+        <label>About:</label>
+        <input type="text" th:value="${user.description}" />
+        <a th:href="@{/user/description-add}">Add description</a>
+    </p>
+</div>
+</body>
+
+</html>
+
+</html>
