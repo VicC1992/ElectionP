@@ -23,6 +23,18 @@ public class CustomUserDetails implements UserDetails {
         return user.getPassword();
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
     @Override
     public String getUsername() {
         return user.getEmail();
@@ -30,6 +42,10 @@ public class CustomUserDetails implements UserDetails {
 
     public String getDescription() {
         return user.getDescription();
+    }
+
+    public void setDescription(String description) {
+        this.user.setDescription(description);
     }
 
     @Override
@@ -54,10 +70,6 @@ public class CustomUserDetails implements UserDetails {
 
     public String getFullName() {
         return user.getFirstName() + " " + user.getLastName();
-    }
-
-    public void setDescription(String description) {
-        this.user.setDescription(description);
     }
 
     public User getUser() {

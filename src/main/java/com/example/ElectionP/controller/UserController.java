@@ -8,10 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,21 +48,22 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public String userProfile(@PathVariable(value = "id") long id, Model model) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id);
         model.addAttribute("user", user);
-        return "user_profile";
+        return "users_profile";
     }
 
     @GetMapping("/user/description-add")
-    public String formAddDescription(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+    public String formAddDescription(@RequestParam("userId") long id, Model model) {
+        User user = userRepository.findById(id);
         model.addAttribute("user", user);
-        return "user_description";
+        return "edit_profile";
     }
 
-    @PostMapping("/user/description-add")
-    public String addDescription(User user, @AuthenticationPrincipal CustomUserDetails loggedUser,
-                                 @RequestParam("description") String description, Model model) {
-        loggedUser.setDescription(user.getDescription());
-        return "redirect:user_home";
+    @PostMapping("/user/update")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userRepository.save(user);
+        return "redirect:/users";
     }
+
 }
