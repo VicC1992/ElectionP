@@ -53,7 +53,7 @@ public class UserController {
         return "users_profile";
     }
 
-    @GetMapping("/user/description-add")
+    @GetMapping("/user/description/add")
     public String formAddDescription(@RequestParam("userId") long id, Model model) {
         User user = userRepository.findById(id);
         model.addAttribute("user", user);
