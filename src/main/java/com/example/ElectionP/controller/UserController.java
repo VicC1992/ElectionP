@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -40,17 +41,14 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("/user-home")
-    public String viewUserHome(@AuthenticationPrincipal CustomUserDetails user, Model model) {
-        model.addAttribute("user", user);
-        return "user_home";
-    }
-
     @GetMapping("/user/{id}")
-    public String userProfile(@PathVariable(value = "id") long id, Model model) {
+    public String userProfile(@PathVariable(value = "id") long id, Model model, Principal principal) {
+        String loggedInUsername = principal.getName();
+        User loggedInUser = userRepository.findByEmail(loggedInUsername);
         User user = userRepository.findById(id);
         model.addAttribute("user", user);
-        return "users_profile";
+        model.addAttribute("loggedInUser", loggedInUser);
+        return "user_profile";
     }
 
     @GetMapping("/user/description/add")
