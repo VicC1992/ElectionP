@@ -41,6 +41,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(auth ->
                         auth.requestMatchers("/users").authenticated()
+                                .requestMatchers("/candidature/add").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(login ->

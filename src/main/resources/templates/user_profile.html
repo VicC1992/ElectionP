@@ -17,7 +17,11 @@
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://idx-acnt-ihouseprd.b-cdn.net/AR999259/file_manager/shutterstock_1902153229.jpg"><span class="font-weight-bold" th:text="${user.firstName} + ' ' + ${user.lastName}"></span></div>
+            <div th:if="${loggedInUser.id == user.id}">
+                <div class="mt-5 text-center"><a th:href="@{/user/description/add(userId=${user.id})}"><button class="btn btn-primary profile-button" type="button">Edit Profile</button></a></div>
+            </div>
         </div>
+
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -33,9 +37,21 @@
                         <div class="col-md-12"><label class="labels">About</label><input type="text" th:value="${user.description}" class="form-control"></div>
                     </div>
                 </div>
+                <br>
                 <div th:if="${loggedInUser.id == user.id}">
-                    <div class="mt-5 text-center"><a th:href="@{/user/description/add(userId=${user.id})}"><button class="btn btn-primary profile-button" type="button">Edit Profile</button></a></div>
+                    <form action="/candidature/add" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="userId" th:value="${user.id}">
+                        <button type="submit" class="btn btn-primary">Add Candidature</button>
+                    </form>
+                    <br>
+                    <form action="/candidature/delete" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="userId" th:value="${user.id}">
+                        <button type="submit" class="btn btn-danger">Delete Candidature</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>

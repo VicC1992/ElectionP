@@ -71,4 +71,15 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Candidature candidature;
+
+    public Candidature getCandidature() {
+        return candidature;
+    }
+
+    public void setCandidature(Candidature candidature) {
+        this.candidature = candidature;
+    }
 }
