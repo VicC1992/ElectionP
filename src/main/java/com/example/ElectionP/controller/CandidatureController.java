@@ -28,7 +28,7 @@ public class CandidatureController {
     public String addCandidature(@RequestParam long userId, Model model) {
         try {
             candidatureService.addCandidature(userId);
-            model.addAttribute("message", "Candidatura depusa cu succes!");
+            model.addAttribute("message", "Candidacy submitted successfully!");
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }
@@ -39,7 +39,7 @@ public class CandidatureController {
     public String deleteCandidature(@RequestParam long userId, Model model) {
         try {
             candidatureService.deleteCandidature(userId);
-            model.addAttribute("message", "Candidatura retrasa cu succes!");
+            model.addAttribute("message", "Candidacy withdrawn successfully!");
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }

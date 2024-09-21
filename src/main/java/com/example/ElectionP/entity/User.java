@@ -2,6 +2,9 @@ package com.example.ElectionP.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -72,14 +75,14 @@ public class User {
         this.description = description;
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Candidature candidature;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidature> candidatures = new ArrayList<>();
 
-    public Candidature getCandidature() {
-        return candidature;
+    public List<Candidature> getCandidatures() {
+        return candidatures;
     }
 
-    public void setCandidature(Candidature candidature) {
-        this.candidature = candidature;
+    public void setCandidatures(List<Candidature>candidatures) {
+        this.candidatures = candidatures;
     }
 }

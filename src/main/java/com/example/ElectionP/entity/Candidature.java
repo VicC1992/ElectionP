@@ -11,7 +11,7 @@ public class Candidature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -41,13 +41,6 @@ public class Candidature {
         this.submissionDate = submissionDate;
     }
 
-    public Candidature(User user) {
-        this.user = user;
-        this.submissionDate = LocalDateTime.now();
-    }
-
     public Candidature() {
-
     }
-
 }
