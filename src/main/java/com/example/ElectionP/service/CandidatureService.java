@@ -58,7 +58,7 @@ public class CandidatureService {
         }
     }
 
-    public List<Candidature>getAllCandidatures() {
+    public List<Candidature> getAllCandidatures() {
         return candidatureRepository.findAll();
     }
 }

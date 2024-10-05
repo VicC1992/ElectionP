@@ -19,7 +19,7 @@ public class CandidatureController {
 
     @GetMapping("/candidature/all")
     public String viewAllCandidatures(Model model) {
-        List<Candidature>candidatures = candidatureService.getAllCandidatures();
+        List<Candidature> candidatures = candidatureService.getAllCandidatures();
         model.addAttribute("candidatures", candidatures);
         return "candidature_list";
     }

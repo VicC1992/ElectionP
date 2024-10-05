@@ -82,7 +82,14 @@ public class User {
         return candidatures;
     }
 
-    public void setCandidatures(List<Candidature>candidatures) {
+    public void setCandidatures(List<Candidature> candidatures) {
         this.candidatures = candidatures;
+    }
+
+    @OneToMany(mappedBy = "voter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votesGiven = new ArrayList<>();
+
+    public List<Vote> getVotesGiven() {
+        return votesGiven;
     }
 }

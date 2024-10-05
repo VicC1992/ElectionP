@@ -3,6 +3,8 @@ package com.example.ElectionP.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "candidatures")
@@ -11,16 +13,24 @@ public class Candidature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "submission_date")
+    private LocalDateTime submissionDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "submission_date")
-    private LocalDateTime submissionDate;
+    @OneToMany(mappedBy = "candidature", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votesReceived = new ArrayList<>();
+
+    public List<Vote> getVotesReceived() {
+        return votesReceived;
+    }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
