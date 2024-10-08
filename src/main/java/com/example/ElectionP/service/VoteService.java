@@ -38,9 +38,4 @@ public class VoteService {
 
         voteRepository.save(vote);
     }
-
-    public int getNumberOfVotesForCandidature(Long candidatureId) {
-        Candidature candidature = candidatureRepository.findById(candidatureId).orElseThrow(() -> new RuntimeException("Candidature not found"));
-        return voteRepository.countByCandidature(candidature);
-    }
 }
