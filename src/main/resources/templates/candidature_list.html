@@ -34,6 +34,7 @@
                 <th>E-mail</th>
                 <th>Number of votes</th>
                 <th>Action</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -53,7 +54,12 @@
                 <td th:text="${candidature.votesReceived.size()}">Number of Votes</td>
                 <td>
                     <form th:action="@{/vote/{id}(id = ${candidature.id})}" method="post">
-                        <button type="submit" class="btn btn-primary">Vote</button>
+                        <button type="submit" class="btn btn-success">Vote</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/withdraw/vote/{id}(id = ${candidature.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Withdraw Vote</button>
                     </form>
                 </td>
             </tr>

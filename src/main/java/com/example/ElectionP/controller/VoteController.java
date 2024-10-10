@@ -43,4 +43,17 @@ public class VoteController {
         }
         return "redirect:/candidature/all";
     }
+
+    @PostMapping("/withdraw/vote/{id}")
+    public String withdrawVote(@PathVariable("id") Long candidatureId, Principal principal, RedirectAttributes redirectAttributes) {
+        String userEmail = principal.getName();
+        User currentUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+        try {
+            voteService.withdrawVote(currentUser.getId(), candidatureId);
+            redirectAttributes.addFlashAttribute("message", "Your vote has been successfully withdraw");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/candidature/all";
+    }
 }
