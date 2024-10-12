@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "votes")
+@Table(name = "votes",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "candidature_id"})})
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

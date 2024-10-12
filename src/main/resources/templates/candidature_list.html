@@ -58,7 +58,7 @@
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/withdraw/vote/{id}(id = ${candidature.id})}" method="post">
+                    <form th:action="@{/vote/{id}/withdraw(id = ${candidature.id})}" method="post">
                         <button type="submit" class="btn btn-danger">Withdraw Vote</button>
                     </form>
                 </td>

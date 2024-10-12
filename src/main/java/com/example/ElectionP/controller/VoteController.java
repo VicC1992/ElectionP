@@ -44,7 +44,7 @@ public class VoteController {
         return "redirect:/candidature/all";
     }
 
-    @PostMapping("/withdraw/vote/{id}")
+    @PostMapping("/vote/{id}/withdraw")
     public String withdrawVote(@PathVariable("id") Long candidatureId, Principal principal, RedirectAttributes redirectAttributes) {
         String userEmail = principal.getName();
         User currentUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
