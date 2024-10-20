@@ -1,6 +1,6 @@
-package com.example.ElectionP.controller;
+package com.vote.PresidentialElection.controller;
 
-import com.example.ElectionP.repository.UserRepository;
+import com.vote.PresidentialElection.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

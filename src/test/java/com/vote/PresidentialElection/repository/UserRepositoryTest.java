@@ -1,6 +1,6 @@
-package com.example.ElectionP.repository;
+package com.vote.PresidentialElection.repository;
 
-import com.example.ElectionP.entity.User;
+import com.vote.PresidentialElection.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

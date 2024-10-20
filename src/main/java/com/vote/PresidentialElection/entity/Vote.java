@@ -1,11 +1,11 @@
-package com.example.ElectionP.entity;
+package com.vote.PresidentialElection.entity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "votes",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "candidature_id"})})
+@Table(name = "votes",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "candidature_id", "vote_round_id"})})
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,10 @@ public class Vote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidature_id", nullable = false)
     private Candidature candidature;
+
+    @ManyToOne
+    @JoinColumn(name = "vote_round_id", nullable = false)
+    private VoteRound voteRound;
 
     @Column(name = "vote_date", nullable = false)
     private LocalDateTime voteDate;
@@ -54,4 +58,11 @@ public class Vote {
         this.candidature = candidature;
     }
 
+    public VoteRound getVoteRound() {
+        return voteRound;
+    }
+
+    public void setVoteRound(VoteRound voteRound) {
+        this.voteRound = voteRound;
+    }
 }

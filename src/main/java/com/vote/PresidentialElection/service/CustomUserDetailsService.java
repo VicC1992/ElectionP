@@ -1,7 +1,7 @@
-package com.example.ElectionP.service;
+package com.vote.PresidentialElection.service;
 
-import com.example.ElectionP.entity.User;
-import com.example.ElectionP.repository.UserRepository;
+import com.vote.PresidentialElection.entity.User;
+import com.vote.PresidentialElection.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

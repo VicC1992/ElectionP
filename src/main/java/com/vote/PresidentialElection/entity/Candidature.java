@@ -1,4 +1,4 @@
-package com.example.ElectionP.entity;
+package com.vote.PresidentialElection.entity;
 
 import jakarta.persistence.*;
 

@@ -1,4 +1,4 @@
-package com.example.ElectionP;
+package com.vote.PresidentialElection;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

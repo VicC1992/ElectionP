@@ -1,6 +1,6 @@
-package com.example.ElectionP.repository;
+package com.vote.PresidentialElection.repository;
 
-import com.example.ElectionP.entity.User;
+import com.vote.PresidentialElection.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

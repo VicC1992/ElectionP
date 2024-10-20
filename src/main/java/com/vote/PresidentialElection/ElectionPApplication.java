@@ -1,4 +1,4 @@
-package com.example.ElectionP;
+package com.vote.PresidentialElection;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

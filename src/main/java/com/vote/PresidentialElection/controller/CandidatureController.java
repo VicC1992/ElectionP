@@ -1,7 +1,9 @@
-package com.example.ElectionP.controller;
+package com.vote.PresidentialElection.controller;
 
-import com.example.ElectionP.entity.Candidature;
-import com.example.ElectionP.service.CandidatureService;
+import com.vote.PresidentialElection.entity.Candidature;
+import com.vote.PresidentialElection.entity.VoteRound;
+import com.vote.PresidentialElection.repository.VoteRoundRepository;
+import com.vote.PresidentialElection.service.CandidatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +19,18 @@ public class CandidatureController {
     @Autowired
     private CandidatureService candidatureService;
 
+    @Autowired
+    private VoteRoundRepository voteRoundRepository;
+
     @GetMapping("/candidature/all")
-    public String viewAllCandidatures(Model model) {
+    public String viewAllCandidatures(Model model, @RequestParam(required = false) Long voteRoundId) {
+        List<VoteRound> voteRounds = voteRoundRepository.findAll();
         List<Candidature> candidatures = candidatureService.getAllCandidatures();
+
+        if (voteRoundId != null) {
+            model.addAttribute("selectedVoteRoundId", voteRoundId);
+        }
+        model.addAttribute("voteRounds", voteRounds);
         model.addAttribute("candidatures", candidatures);
         return "candidature_list";
     }

@@ -1,11 +1,13 @@
-package com.example.ElectionP.service;
+package com.vote.PresidentialElection.service;
 
-import com.example.ElectionP.entity.Candidature;
-import com.example.ElectionP.entity.User;
-import com.example.ElectionP.entity.Vote;
-import com.example.ElectionP.repository.CandidatureRepository;
-import com.example.ElectionP.repository.UserRepository;
-import com.example.ElectionP.repository.VoteRepository;
+import com.vote.PresidentialElection.entity.Candidature;
+import com.vote.PresidentialElection.entity.User;
+import com.vote.PresidentialElection.entity.Vote;
+import com.vote.PresidentialElection.entity.VoteRound;
+import com.vote.PresidentialElection.repository.CandidatureRepository;
+import com.vote.PresidentialElection.repository.UserRepository;
+import com.vote.PresidentialElection.repository.VoteRepository;
+import com.vote.PresidentialElection.repository.VoteRoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,18 @@ public class VoteService {
     @Autowired
     private UserRepository userRepository;
 
-    public void vote(Long voterId, Long candidatureId) {
+    @Autowired
+    private VoteRoundRepository voteRoundRepository;
+
+    public void vote(Long voterId, Long candidatureId, Long voteRoundId) {
         User voter = userRepository.findById(voterId).orElseThrow(() -> new RuntimeException("Voter not found"));
         Candidature candidature = candidatureRepository.findById(candidatureId).orElseThrow(() -> new RuntimeException("Candidature not found"));
+        VoteRound voteRound = voteRoundRepository.findById(voteRoundId).orElseThrow(()-> new RuntimeException("Vote round not found"));
 
         Vote vote = new Vote();
         vote.setVoter(voter);
         vote.setCandidature(candidature);
+        vote.setVoteRound(voteRound);
         vote.setVoteDate(LocalDateTime.now());
 
         try {
@@ -40,10 +47,11 @@ public class VoteService {
         }
     }
 
-    public void withdrawVote(Long voterId, Long candidatureId) {
+    public void withdrawVote(Long voterId, Long candidatureId, Long voteRoundId) {
         User voter = userRepository.findById(voterId).orElseThrow(() -> new RuntimeException("Voter not found"));
         Candidature candidature = candidatureRepository.findById(candidatureId).orElseThrow(() -> new RuntimeException("Candidature not found"));
-        Optional<Vote>existingVote = voteRepository.findByVoterAndCandidature(voter, candidature);
+        VoteRound voteRound = voteRoundRepository.findById(voteRoundId).orElseThrow(()-> new RuntimeException("Vote round not found"));
+        Optional<Vote>existingVote = voteRepository.findByVoterAndCandidatureAndVoteRound(voter, candidature, voteRound);
         if (existingVote.isPresent()) {
             voteRepository.delete(existingVote.get());
         } else {

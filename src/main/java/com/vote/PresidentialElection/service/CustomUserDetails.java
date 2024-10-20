@@ -1,6 +1,6 @@
-package com.example.ElectionP.service;
+package com.vote.PresidentialElection.service;
 
-import com.example.ElectionP.entity.User;
+import com.vote.PresidentialElection.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

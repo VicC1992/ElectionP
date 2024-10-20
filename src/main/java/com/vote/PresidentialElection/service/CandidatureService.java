@@ -1,9 +1,9 @@
-package com.example.ElectionP.service;
+package com.vote.PresidentialElection.service;
 
-import com.example.ElectionP.entity.Candidature;
-import com.example.ElectionP.entity.User;
-import com.example.ElectionP.repository.CandidatureRepository;
-import com.example.ElectionP.repository.UserRepository;
+import com.vote.PresidentialElection.entity.Candidature;
+import com.vote.PresidentialElection.entity.User;
+import com.vote.PresidentialElection.repository.CandidatureRepository;
+import com.vote.PresidentialElection.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
