@@ -43,12 +43,20 @@ public class VoteController {
     @Autowired
     private VoteResultRepository voteResultRepository;
 
+
+
     @PostMapping("/vote/rounds/create")
     public String createVoteRound(@RequestParam("roundName") String roundName, RedirectAttributes redirectAttributes) {
         VoteRound newRound = new VoteRound();
         newRound.setStartDate(LocalDateTime.now());
         newRound.setRoundName(roundName);
         voteRoundRepository.save(newRound);
+
+        List<Candidature>allCandidatures = candidatureRepository.findAll();
+        for (Candidature candidature : allCandidatures) {
+            candidature.getVotesReceived().clear();
+            candidatureRepository.save(candidature);
+        }
         redirectAttributes.addFlashAttribute("roundMessage", "New voting round created successfully!");
         return "redirect:/candidature/all";
     }
@@ -56,6 +64,7 @@ public class VoteController {
     @PostMapping("/vote/rounds/close/{id}")
     public String closeVoteRound(@PathVariable("id") Long roundId, RedirectAttributes redirectAttributes) {
         Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(roundId);
+
         if (voteRoundOptional.isPresent()) {
             VoteRound voteRound = voteRoundOptional.get();
 
@@ -70,6 +79,7 @@ public class VoteController {
                     voteResult.setFirstName(candidature.getUser().getFirstName());
                     voteResult.setLastName(candidature.getUser().getLastName());
                     voteResult.setVotesCount(candidature.getVotesReceived().size());
+
                     voteResultRepository.save(voteResult);
                 }
                 voteRoundRepository.save(voteRound);
@@ -82,6 +92,7 @@ public class VoteController {
         }
         return "redirect:/candidature/all";
     }
+
 
     @PostMapping("/vote/{id}")
     public String voteCandidature(@PathVariable("id") Long candidatureId, Principal principal,@RequestParam("voteRoundId") Long voteRoundId, RedirectAttributes redirectAttributes) {
@@ -111,6 +122,7 @@ public class VoteController {
         }
         return "redirect:/candidature/all";
     }
+
 
     @PostMapping("/vote/{id}/withdraw")
     public String withdrawVote(@PathVariable("id") Long candidatureId, Principal principal,@RequestParam("voteRoundId") Long voteRoundId, RedirectAttributes redirectAttributes) {
