@@ -23,6 +23,18 @@ public class Candidature {
     @OneToMany(mappedBy = "candidature", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> votesReceived = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "vote_round_id", nullable = false)
+    private VoteRound voteRound;
+
+    public VoteRound getVoteRound() {
+        return voteRound;
+    }
+
+    public void setVoteRound(VoteRound voteRound) {
+        this.voteRound = voteRound;
+    }
+
     public List<Vote> getVotesReceived() {
         return votesReceived;
     }

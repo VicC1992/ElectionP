@@ -2,8 +2,10 @@ package com.vote.PresidentialElection.service;
 
 import com.vote.PresidentialElection.entity.Candidature;
 import com.vote.PresidentialElection.entity.User;
+import com.vote.PresidentialElection.entity.VoteRound;
 import com.vote.PresidentialElection.repository.CandidatureRepository;
 import com.vote.PresidentialElection.repository.UserRepository;
+import com.vote.PresidentialElection.repository.VoteRoundRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,21 +20,31 @@ public class CandidatureService {
     private CandidatureRepository candidatureRepository;
 
     @Autowired
+    private VoteRoundRepository voteRoundRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
-    public Candidature addCandidature(Long userId) {
+    public Candidature addCandidature(Long userId, Long voteRoundId) {
         Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
+        Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(voteRoundId);
+
+        if (userOptional.isPresent() && voteRoundOptional.isPresent()) {
             User user = userOptional.get();
+
             if (!user.getCandidatures().isEmpty()) {
                 throw new RuntimeException("User already has a candidature");
             }
+
             Candidature candidature = new Candidature();
             candidature.setUser(user);
+            candidature.setVoteRound(voteRoundOptional.get());
             candidature.setSubmissionDate(LocalDateTime.now());
+
             user.getCandidatures().add(candidature);
             candidatureRepository.save(candidature);
             userRepository.save(user);
+
             return candidature;
         } else {
             throw new RuntimeException("User not found");
@@ -60,5 +72,13 @@ public class CandidatureService {
 
     public List<Candidature> getAllCandidatures() {
         return candidatureRepository.findAll();
+    }
+
+    public List<Candidature>getCandidaturesByVoteRoundId(Long voteRoundId) {
+        if (voteRoundId == null) {
+            return candidatureRepository.findAll();
+        } else {
+            return candidatureRepository.findByVoteRoundId(voteRoundId);
+        }
     }
 }

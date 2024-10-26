@@ -25,20 +25,19 @@ public class CandidatureController {
     @GetMapping("/candidature/all")
     public String viewAllCandidatures(Model model, @RequestParam(required = false) Long voteRoundId) {
         List<VoteRound> voteRounds = voteRoundRepository.findAll();
-        List<Candidature> candidatures = candidatureService.getAllCandidatures();
+        List<Candidature> candidatures = candidatureService.getCandidaturesByVoteRoundId(voteRoundId);
 
-        if (voteRoundId != null) {
-            model.addAttribute("selectedVoteRoundId", voteRoundId);
-        }
+
+        model.addAttribute("selectedVoteRoundId", voteRoundId);
         model.addAttribute("voteRounds", voteRounds);
         model.addAttribute("candidatures", candidatures);
         return "candidature_list";
     }
 
     @PostMapping("/candidature/add")
-    public String addCandidature(@RequestParam long userId, Model model) {
+    public String addCandidature(@RequestParam long userId, @RequestParam long voteRoundId, Model model) {
         try {
-            candidatureService.addCandidature(userId);
+            candidatureService.addCandidature(userId, voteRoundId);
             model.addAttribute("message", "Candidacy submitted successfully!");
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());

@@ -1,7 +1,9 @@
 package com.vote.PresidentialElection.controller;
 
 import com.vote.PresidentialElection.entity.User;
+import com.vote.PresidentialElection.entity.VoteRound;
 import com.vote.PresidentialElection.repository.UserRepository;
+import com.vote.PresidentialElection.repository.VoteRoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private VoteRoundRepository voteRoundRepository;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -47,6 +52,8 @@ public class UserController {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User with ID" + id + "not found"));
 
+        List<VoteRound> voteRounds = voteRoundRepository.findAll();
+        model.addAttribute("voteRounds", voteRounds);
         model.addAttribute("user", user);
         model.addAttribute("loggedInUser", loggedInUser);
         return "user_profile";

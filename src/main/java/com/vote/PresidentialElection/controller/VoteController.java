@@ -51,12 +51,7 @@ public class VoteController {
         newRound.setStartDate(LocalDateTime.now());
         newRound.setRoundName(roundName);
         voteRoundRepository.save(newRound);
-
-        List<Candidature>allCandidatures = candidatureRepository.findAll();
-        for (Candidature candidature : allCandidatures) {
-            candidature.getVotesReceived().clear();
-            candidatureRepository.save(candidature);
-        }
+        candidatureRepository.deleteAll();
         redirectAttributes.addFlashAttribute("roundMessage", "New voting round created successfully!");
         return "redirect:/candidature/all";
     }

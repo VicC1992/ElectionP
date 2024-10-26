@@ -42,6 +42,14 @@
                     <form action="/candidature/add" method="post">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                         <input type="hidden" name="userId" th:value="${user.id}">
+
+                        <label for="voteRound">Select Voting Round:</label>
+                        <select name="voteRoundId" id="voteRound" required>
+                            <option th:each="round : ${voteRounds}"
+                                    th:value="${round.id}"
+                                    th:text="${round.roundName}"></option>
+                        </select>
+
                         <button type="submit" class="btn btn-primary">Add Candidature</button>
                     </form>
                     <br>
