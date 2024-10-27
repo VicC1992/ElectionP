@@ -32,8 +32,8 @@ public class CandidatureService {
         if (userOptional.isPresent() && voteRoundOptional.isPresent()) {
             User user = userOptional.get();
 
-            if (!user.getCandidatures().isEmpty()) {
-                throw new RuntimeException("User already has a candidature");
+            if (user.getCandidatures().stream().anyMatch(c -> c.getVoteRound().getId().equals(voteRoundId))) {
+                throw new RuntimeException("User already has a candidature for this voting round");
             }
 
             Candidature candidature = new Candidature();
