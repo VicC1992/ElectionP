@@ -22,16 +22,19 @@ public class CandidatureController {
     @Autowired
     private VoteRoundRepository voteRoundRepository;
 
-    @GetMapping("/candidature/all")
-    public String viewAllCandidatures(Model model, @RequestParam(required = false) Long voteRoundId) {
+    @GetMapping("/elections/list")
+    public String viewActiveRounds(Model model) {
         List<VoteRound> voteRounds = voteRoundRepository.findAll();
-        List<Candidature> candidatures = candidatureService.getCandidaturesByVoteRoundId(voteRoundId);
-
-
-        model.addAttribute("selectedVoteRoundId", voteRoundId);
         model.addAttribute("voteRounds", voteRounds);
+        return "active_elections";
+    }
+
+    @GetMapping("/candidature/list")
+    public String viewCandidaturesByRound(Model model, @RequestParam Long voteRoundId) {
+        List<Candidature>candidatures = candidatureService.getCandidaturesByVoteRoundId(voteRoundId);
+        model.addAttribute("selectedVoteRoundId", voteRoundId);
         model.addAttribute("candidatures", candidatures);
-        return "candidature_list";
+        return "candidate_list";
     }
 
     @PostMapping("/candidature/add")
@@ -42,17 +45,17 @@ public class CandidatureController {
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 
     @PostMapping("/candidature/delete")
-    public String deleteCandidature(@RequestParam long userId, Model model) {
+    public String deleteCandidature(@RequestParam long userId,long voteRoundId, Model model) {
         try {
-            candidatureService.deleteCandidature(userId);
+            candidatureService.deleteCandidature(userId , voteRoundId);
             model.addAttribute("message", "Candidacy withdrawn successfully!");
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 }

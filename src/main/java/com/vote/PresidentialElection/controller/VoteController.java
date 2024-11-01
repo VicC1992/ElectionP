@@ -52,7 +52,7 @@ public class VoteController {
         newRound.setRoundName(roundName);
         voteRoundRepository.save(newRound);
         redirectAttributes.addFlashAttribute("roundMessage", "New voting round created successfully!");
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 
     @PostMapping("/vote/rounds/close/{id}")
@@ -65,7 +65,7 @@ public class VoteController {
             if (voteRound.getEndDate() == null) {
                 voteRound.setEndDate(LocalDateTime.now());
 
-                List<Candidature>candidatures = candidatureRepository.findAll();
+                List<Candidature>candidatures = candidatureRepository.findByVoteRoundId(roundId);
                 for (Candidature candidature : candidatures) {
                     VoteResult voteResult = new VoteResult();
                     voteResult.setVoteRound(voteRound);
@@ -84,7 +84,7 @@ public class VoteController {
         } else {
             redirectAttributes.addFlashAttribute("roundError", "Round not found.");
         }
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 
 
@@ -92,7 +92,7 @@ public class VoteController {
     public String voteCandidature(@PathVariable("id") Long candidatureId, Principal principal,@RequestParam("voteRoundId") Long voteRoundId, RedirectAttributes redirectAttributes) {
         if (voteRoundId == null || voteRoundId == 0) {
             redirectAttributes.addFlashAttribute("error", "Invalid voting round selected.");
-            return "redirect:/candidature/all";
+            return "redirect:/elections/list";
         }
 
         VoteRound voteRound = voteRoundRepository.findById(voteRoundId)
@@ -101,7 +101,7 @@ public class VoteController {
         LocalDateTime now = LocalDateTime.now();
         if (voteRound.getStartDate().isAfter(now) || (voteRound.getEndDate() != null && voteRound.getEndDate().isBefore(now))) {
             redirectAttributes.addFlashAttribute("error", "The selected voting round is not active.");
-            return "redirect:/candidature/all";
+            return "redirect:/elections/list";
         }
 
         String userEmail = principal.getName();
@@ -114,7 +114,7 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
 
         }
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 
 
@@ -122,14 +122,14 @@ public class VoteController {
     public String withdrawVote(@PathVariable("id") Long candidatureId, Principal principal,@RequestParam("voteRoundId") Long voteRoundId, RedirectAttributes redirectAttributes) {
         if (voteRoundId == null || voteRoundId == 0) {
             redirectAttributes.addFlashAttribute("error", "Invalid voting round selected.");
-            return "redirect:/candidature/all";
+            return "redirect:/elections/list";
         }
         VoteRound voteRound = voteRoundRepository.findById(voteRoundId)
                 .orElseThrow(()-> new RuntimeException("Voting round not found."));
         LocalDateTime now = LocalDateTime.now();
         if (voteRound.getStartDate().isAfter(now) || (voteRound.getEndDate() != null && voteRound.getEndDate().isBefore(now))) {
             redirectAttributes.addFlashAttribute("error", "The selected voting round is not active.");
-            return "redirect:/candidature/all";
+            return "redirect:/elections/list";
         }
 
         String userEmail = principal.getName();
@@ -140,6 +140,6 @@ public class VoteController {
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-        return "redirect:/candidature/all";
+        return "redirect:/elections/list";
     }
 }

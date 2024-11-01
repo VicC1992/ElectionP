@@ -31,6 +31,11 @@ public class CandidatureService {
 
         if (userOptional.isPresent() && voteRoundOptional.isPresent()) {
             User user = userOptional.get();
+            VoteRound voteRound = voteRoundOptional.get();
+
+            if (voteRound.getEndDate() != null) {
+                throw new RuntimeException("Cannot add candidature. The voting round is closed.");
+            }
 
             if (user.getCandidatures().stream().anyMatch(c -> c.getVoteRound().getId().equals(voteRoundId))) {
                 throw new RuntimeException("User already has a candidature for this voting round");
@@ -52,10 +57,15 @@ public class CandidatureService {
     }
 
     @Transactional
-    public void deleteCandidature(Long userId) {
+    public void deleteCandidature(Long userId, Long voteRoundId) {
         Optional<User> userOptional = userRepository.findById(userId);
+        Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(voteRoundId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            VoteRound voteRound = voteRoundOptional.get();
+            if (voteRound.getEndDate() != null) {
+                throw new RuntimeException("Cannot add candidature. The voting round is closed.");
+            }
             if (!user.getCandidatures().isEmpty()) {
                 Candidature candidatureToDelete = user.getCandidatures().get(0);
                 user.getCandidatures().remove(candidatureToDelete);

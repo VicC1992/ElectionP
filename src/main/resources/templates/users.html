@@ -20,7 +20,7 @@
         </form>
     </div>
     <div>
-        <p><a th:href="@{/candidature/all}">List of election candidates</a></p>
+        <p><a th:href="@{/elections/list}">List of active elections</a></p>
     </div>
     <div>
         <h1>List of Users</h1>
@@ -40,7 +40,9 @@
             <tr th:each="user: ${listUsers}">
                 <td th:text="${user.id}">User ID</td>
                 <td th:text="${user.email}">E-mail</td>
-                <td><a th:href="'/user/' + ${user.id}" th:text="${user.firstName}"></a></td>
+                <td>
+                    <a th:href="'/user/' + ${user.id}" th:text="${user.firstName}"></a>
+                </td>
                 <td th:text="${user.lastName}">Last Name</td>
             </tr>
             </tbody>
