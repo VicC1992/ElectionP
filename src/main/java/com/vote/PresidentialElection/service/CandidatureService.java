@@ -25,7 +25,7 @@ public class CandidatureService {
     @Autowired
     private UserRepository userRepository;
 
-    public Candidature addCandidature(Long userId, Long voteRoundId) {
+    public Candidature addCandidature(long userId, long voteRoundId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(voteRoundId);
 
@@ -57,7 +57,7 @@ public class CandidatureService {
     }
 
     @Transactional
-    public void deleteCandidature(Long userId, Long voteRoundId) {
+    public void deleteCandidature(long userId, long voteRoundId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(voteRoundId);
         if (userOptional.isPresent()) {

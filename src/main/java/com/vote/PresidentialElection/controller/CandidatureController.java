@@ -19,16 +19,6 @@ public class CandidatureController {
     @Autowired
     private CandidatureService candidatureService;
 
-    @Autowired
-    private VoteRoundRepository voteRoundRepository;
-
-    @GetMapping("/elections/list")
-    public String viewActiveRounds(Model model) {
-        List<VoteRound> voteRounds = voteRoundRepository.findAll();
-        model.addAttribute("voteRounds", voteRounds);
-        return "active_elections";
-    }
-
     @GetMapping("/candidature/list")
     public String viewCandidaturesByRound(Model model, @RequestParam Long voteRoundId) {
         List<Candidature>candidatures = candidatureService.getCandidaturesByVoteRoundId(voteRoundId);
@@ -49,7 +39,7 @@ public class CandidatureController {
     }
 
     @PostMapping("/candidature/delete")
-    public String deleteCandidature(@RequestParam long userId,long voteRoundId, Model model) {
+    public String deleteCandidature(@RequestParam long userId,@RequestParam long voteRoundId, Model model) {
         try {
             candidatureService.deleteCandidature(userId , voteRoundId);
             model.addAttribute("message", "Candidacy withdrawn successfully!");
