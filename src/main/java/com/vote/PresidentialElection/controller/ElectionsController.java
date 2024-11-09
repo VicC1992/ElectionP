@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -33,9 +35,40 @@ public class ElectionsController {
 
     @GetMapping("/elections/list")
     public String viewActiveRounds(Model model) {
-        List<VoteRound> voteRounds = voteRoundRepository.findAll();
+        List<VoteRound> voteRounds = voteRoundRepository.findByEndDateIsNull();
         model.addAttribute("voteRounds", voteRounds);
         return "active_elections";
+    }
+
+    @GetMapping("/elections/closed")
+    public String viewClosedRoundsWithResults(Model model) {
+        List<VoteRound> closedRounds = voteRoundRepository.findByEndDateIsNotNull();
+        Map<VoteRound, List<VoteResult>> roundResults = new HashMap<>();
+
+        for (VoteRound round : closedRounds) {
+            List<VoteResult> results = voteResultRepository.findByVoteRound(round);
+            roundResults.put(round, results);
+        }
+
+        model.addAttribute("roundResults", roundResults);
+        return "closed_elections";
+    }
+
+    @GetMapping("/elections/closed/{id}")
+    public String viewResultsForRound(@PathVariable("id") Long roundId, Model model) {
+        Optional<VoteRound> voteRoundOptional = voteRoundRepository.findById(roundId);
+
+        if (voteRoundOptional.isPresent()) {
+            VoteRound voteRound = voteRoundOptional.get();
+            List<VoteResult> results = voteResultRepository.findByVoteRound(voteRound);
+
+            model.addAttribute("voteRound", voteRound);
+            model.addAttribute("results", results);
+            return "round_results";
+        } else {
+            model.addAttribute("error", "Round not found.");
+            return "redirect:/elections/list";
+        }
     }
 
     @PostMapping("/vote/rounds/create")
@@ -58,7 +91,7 @@ public class ElectionsController {
             if (voteRound.getEndDate() == null) {
                 voteRound.setEndDate(LocalDateTime.now());
 
-                List<Candidature>candidatures = candidatureRepository.findByVoteRoundId(roundId);
+                List<Candidature> candidatures = candidatureRepository.findByVoteRoundId(roundId);
                 for (Candidature candidature : candidatures) {
                     VoteResult voteResult = new VoteResult();
                     voteResult.setVoteRound(voteRound);

@@ -70,7 +70,7 @@ public class UserController {
     @PostMapping("/user/update")
     public String saveUser(@ModelAttribute("user") User user) {
         userRepository.save(user);
-        return "redirect:/users";
+        return "redirect:/user/" + user.getId();
     }
 
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface VoteRoundRepository extends JpaRepository<VoteRound, Long> {
     List<VoteRound> findByEndDateIsNull();
+    List<VoteRound>findByEndDateIsNotNull();
 }

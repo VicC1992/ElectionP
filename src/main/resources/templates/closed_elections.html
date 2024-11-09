@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Closed Elections</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Tenth navbar example">
+        <div class="container-fluid"> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarsExample08"> <span class="navbar-text text-white" th:text="'Welcome ' + ${#authentication.principal.fullName}"></span>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/elections/list}">Active Elections</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="'/user/' + ${#authentication.principal.id}">My profile</a>
+                    </li>
+                </ul>
+
+                <form th:action="@{/logout}" method="post" class="d-flex">
+                    <button type="submit" class="btn btn-warning">Sign Out</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container text-center">
+    <h1>Closed Voting Rounds</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Round Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${roundResults}">
+            <td th:text="${entry.key.roundName}">Round Name</td>
+            <td th:text="${entry.key.startDate}">Start Date</td>
+            <td th:text="${entry.key.endDate}">End Date</td>
+            <td>
+                <a th:href="@{/elections/closed/{id}(id=${entry.key.id})}" class="btn btn-danger">View Results</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</div>
+</html>

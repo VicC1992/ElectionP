@@ -27,6 +27,20 @@ public class User {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidature> candidatures = new ArrayList<>();
+
+    public List<Candidature> getCandidatures() {
+        return candidatures;
+    }
+
+    public void setCandidatures(List<Candidature> candidatures) {
+        this.candidatures = candidatures;
+    }
+
+    @OneToMany(mappedBy = "voter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votesGiven = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -74,20 +88,6 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Candidature> candidatures = new ArrayList<>();
-
-    public List<Candidature> getCandidatures() {
-        return candidatures;
-    }
-
-    public void setCandidatures(List<Candidature> candidatures) {
-        this.candidatures = candidatures;
-    }
-
-    @OneToMany(mappedBy = "voter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vote> votesGiven = new ArrayList<>();
 
     public List<Vote> getVotesGiven() {
         return votesGiven;

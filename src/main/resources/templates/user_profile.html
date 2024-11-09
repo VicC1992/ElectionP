@@ -5,16 +5,38 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="/css/profilestyle.css" />
     <title>User profile</title>
     <link href="/style.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="container rounded bg-white mt-5 mb-5">
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Tenth navbar example">
+        <div class="container-fluid"> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarsExample08"> <span class="navbar-text text-white" th:text="'Welcome ' + ${#authentication.principal.fullName}"></span>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/elections/list}">Active Elections</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/elections/closed}">Closed Elections</a>
+                    </li>
+                </ul>
+
+                <form th:action="@{/logout}" method="post" class="d-flex">
+                    <button type="submit" class="btn btn-warning">Sign Out</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container rounded bg-white mt-5 mb-5" >
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://idx-acnt-ihouseprd.b-cdn.net/AR999259/file_manager/shutterstock_1902153229.jpg"><span class="font-weight-bold" th:text="${user.firstName} + ' ' + ${user.lastName}"></span></div>
@@ -28,7 +50,7 @@
         </div>
 
         <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
+            <div class="p-3 py-5" transparent-container>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">User Profile</h4>
                 </div>
@@ -65,11 +87,9 @@
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                         <input type="hidden" name="userId" th:value="${user.id}">
                         <input type="hidden" id="voteRoundIdAdd" name="voteRoundId">
+                        <br>
                         <button type="submit" class="btn btn-primary">Add Candidature</button>
                     </form>
-
-                    <br>
-
                     <form id="deleteForm" action="/candidature/delete" method="post">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                         <input type="hidden" name="userId" th:value="${user.id}">
@@ -79,12 +99,9 @@
                 </div>
 
             </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-<!-- Optional JavaScript; choose one of the two! -->
-
-<!-- Option 1: Bootstrap Bundle with Popper -->
 <script src="/scripts.js"></script>
 
 </body>
