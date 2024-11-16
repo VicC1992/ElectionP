@@ -3,7 +3,10 @@ package com.vote.PresidentialElection.entity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -27,7 +30,7 @@ public class User {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Candidature> candidatures = new ArrayList<>();
 
     public List<Candidature> getCandidatures() {
@@ -38,8 +41,26 @@ public class User {
         this.candidatures = candidatures;
     }
 
-    @OneToMany(mappedBy = "voter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "voter", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Vote> votesGiven = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(columnDefinition = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public String getRoleNames() {
+        return roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public void setRoles(Set<Role>roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;

@@ -47,7 +47,7 @@
                 <span th:text="${roundError}"></span>
             </div>
         </div>
-        <form th:action="@{/vote/rounds/create}" method="post">
+        <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/vote/rounds/create}" method="post">
             <input type="text" name="roundName" placeholder="Round Name" required/>
             <button type="submit" class="btn btn-primary">Create New Round</button>
         </form>
@@ -64,13 +64,14 @@
                 <button type="submit" class="btn btn-primary">Select Round</button>
             </form>
         </div>
+        <br>
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
                 <th>Round Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Action</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -78,7 +79,7 @@
                 <td th:text="${round.roundName}">Round Name</td>
                 <td th:text="${round.startDate}">Start Date</td>
                 <td th:text="${round.endDate}">End Date</td>
-                <td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')">
                     <form th:action="@{/vote/rounds/close/{id}(id=${round.id})}" method="post">
                         <button type="submit" class="btn btn-danger" th:disabled="${round.endDate != null}">Close Round
                         </button>

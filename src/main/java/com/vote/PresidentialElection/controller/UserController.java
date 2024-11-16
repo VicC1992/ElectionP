@@ -1,7 +1,9 @@
 package com.vote.PresidentialElection.controller;
 
+import com.vote.PresidentialElection.entity.Role;
 import com.vote.PresidentialElection.entity.User;
 import com.vote.PresidentialElection.entity.VoteRound;
+import com.vote.PresidentialElection.repository.RoleRepository;
 import com.vote.PresidentialElection.repository.UserRepository;
 import com.vote.PresidentialElection.repository.VoteRoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -20,6 +23,9 @@ public class UserController {
 
     @Autowired
     private VoteRoundRepository voteRoundRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -32,6 +38,18 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+
+        boolean isAdminExists = userRepository.existsByRolesName("ADMIN");
+
+        if (!isAdminExists) {
+            Role adminRole = roleRepository.findByName("ADMIN")
+                    .orElseThrow(()-> new RuntimeException("Role ADMIN not found"));
+            user.getRoles().add(adminRole);
+        } else {
+            Role userRole = roleRepository.findByName("USER")
+                    .orElseThrow(()-> new RuntimeException("Role USER not found"));
+            user.getRoles().add(userRole);
+        }
 
         userRepository.save(user);
         return "register_success";
@@ -69,6 +87,8 @@ public class UserController {
 
     @PostMapping("/user/update")
     public String saveUser(@ModelAttribute("user") User user) {
+        Optional<User> existingUser = userRepository.findById(user.getId());
+        user.setRoles(existingUser.get().getRoles());
         userRepository.save(user);
         return "redirect:/user/" + user.getId();
     }
