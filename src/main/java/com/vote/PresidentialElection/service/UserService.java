@@ -21,7 +21,6 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        user.getRoles().clear();
         user.getRoles().add(role);
         userRepository.save(user);
     }
