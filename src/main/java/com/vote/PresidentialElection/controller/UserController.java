@@ -39,16 +39,16 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        boolean isAdminExists = userRepository.existsByRolesName("ADMIN");
+        boolean isAdminExists = userRepository.existsByRoleName("ADMIN");
 
         if (!isAdminExists) {
             Role adminRole = roleRepository.findByName("ADMIN")
                     .orElseThrow(()-> new RuntimeException("Role ADMIN not found"));
-            user.getRoles().add(adminRole);
+            user.setRole(adminRole);
         } else {
             Role userRole = roleRepository.findByName("USER")
                     .orElseThrow(()-> new RuntimeException("Role USER not found"));
-            user.getRoles().add(userRole);
+            user.setRole(userRole);
         }
 
         userRepository.save(user);
@@ -88,7 +88,7 @@ public class UserController {
     @PostMapping("/user/update")
     public String saveUser(@ModelAttribute("user") User user) {
         Optional<User> existingUser = userRepository.findById(user.getId());
-        user.setRoles(existingUser.get().getRoles());
+        user.setRole(existingUser.get().getRole());
         userRepository.save(user);
         return "redirect:/user/" + user.getId();
     }

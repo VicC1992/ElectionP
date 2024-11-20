@@ -71,7 +71,7 @@
                 <td th:text="${user.firstName}">First Name</td>
                 <td th:text="${user.lastName}">Last Name</td>
                 <td th:text="${user.email}">E-mail</td>
-                <td th:text="${user.roleNames}">Role</td>
+                <td th:text="${user.role.name}">Role</td>
                 <td><a th:href="'/user/' + ${user.id}" class="btn btn-info">View Profile</a></td>
             </tr>
             </tbody>

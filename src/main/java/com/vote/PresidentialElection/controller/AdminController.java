@@ -54,10 +54,4 @@ public class AdminController {
         userService.assignRoleToUser(userId, roleId);
         return "redirect:/admin/manage-users-roles";
     }
-
-    @PostMapping("/delete-role")
-    public String removeRoleFromUser(@RequestParam Long userId, @RequestParam Long roleId) {
-        userService.removeRoleFromUser(userId, roleId);
-        return "redirect:/admin/manage-users-roles";
-    }
 }

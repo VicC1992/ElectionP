@@ -44,22 +44,16 @@ public class User {
     @OneToMany(mappedBy = "voter", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Vote> votesGiven = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(columnDefinition = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public String getRoleNames() {
-        return roles.stream()
-                .map(Role::getName)
-                .collect(Collectors.joining(", "));
-    }
-
-    public void setRoles(Set<Role>roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Long getId() {

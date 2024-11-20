@@ -21,21 +21,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        user.getRoles().add(role);
+        user.setRole(role);
         userRepository.save(user);
-    }
-
-    public void removeRoleFromUser(Long userId, Long roleId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-
-        if (user.getRoles().contains(role)) {
-            user.getRoles().remove(role);
-            userRepository.save(user);
-        } else {
-            throw new IllegalStateException("User does not have this role assigned.");
-        }
     }
 }

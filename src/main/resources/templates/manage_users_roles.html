@@ -62,22 +62,6 @@
 
     <button type="submit" class="btn btn-success">Assign Role</button>
 </form>
-<br>
-<h2>Delete user role</h2>
-
-<form th:action="@{/admin/delete-role}" method="post">
-    <label for="userId">User:</label>
-    <select id="userId" name="userId" required>
-        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName + ' ' + user.lastName}">User Option</option>
-    </select>
-
-    <label for="roleId">Role:</label>
-    <select id="roleId" name="roleId" required>
-        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}">Role Option</option>
-    </select>
-
-    <button type="submit" class="btn btn-danger">Delete Role</button>
-</form>
 </body>
 
 </html>
