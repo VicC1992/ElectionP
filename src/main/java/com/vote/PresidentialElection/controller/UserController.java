@@ -38,19 +38,8 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
-        boolean isAdminExists = userRepository.existsByRoleName("ADMIN");
-
-        if (!isAdminExists) {
-            Role adminRole = roleRepository.findByName("ADMIN")
-                    .orElseThrow(()-> new RuntimeException("Role ADMIN not found"));
-            user.setRole(adminRole);
-        } else {
-            Role userRole = roleRepository.findByName("USER")
-                    .orElseThrow(()-> new RuntimeException("Role USER not found"));
-            user.setRole(userRole);
-        }
-
+        Role userRole = roleRepository.findByName("USER").orElseThrow(()-> new RuntimeException("Role USER not found"));
+        user.setRole(userRole);
         userRepository.save(user);
         return "register_success";
     }
